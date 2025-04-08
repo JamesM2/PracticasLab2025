@@ -2,7 +2,7 @@ package Actividad01Hanoi;
 
 public class Hanoi {
     public static void main(String[] args) {
-        int n = 3; // Cambiar el número de discos según se necesite
+        int n = 10; // Cambiar el número de discos según se necesite
         torresHanoi(n, 1, 2, 3);
     }
 
