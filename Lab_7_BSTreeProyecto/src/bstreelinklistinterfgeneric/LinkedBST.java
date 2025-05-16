@@ -107,7 +107,6 @@ public class LinkedBST<E extends Comparable<E>> implements BinarySearchTree<E> {
     }
 
     // ToString (In-orden para mostrar elementos ordenados)
-    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         inOrder(root, sb);
@@ -171,4 +170,5 @@ public class LinkedBST<E extends Comparable<E>> implements BinarySearchTree<E> {
         while (node.right != null) node = node.right;
         return node.data;
     }
+    
 }
