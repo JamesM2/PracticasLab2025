@@ -1,37 +1,17 @@
 package graph;
+//Clase que representa una arista entre dos vértices con peso
+public class Edge<V> {
+ // Vértice origen
+ public V from;
+ // Vértice destino
+ public V to;
+ // Peso de la arista
+ public int weight;
 
- //Representa una arista que conecta a un vértice destino.
-public class Edge<E> {
-    private Vertex<E> refDest;
-    private int weight;
-
-    public Edge(Vertex<E> refDest) {
-        this(refDest, -1); // valor por defecto: sin peso
-    }
-
-    public Edge(Vertex<E> refDest, int weight) {
-        this.refDest = refDest;
-        this.weight = weight;
-    }
-
-    public Vertex<E> getRefDest() {
-        return refDest;
-    }
-
-    public int getWeight() {
-        return weight;
-    }
-
-    public boolean equals(Object o) {
-        if (o instanceof Edge<?>) {
-            Edge<E> e = (Edge<E>) o;
-            return this.refDest.equals(e.refDest);
-        }
-        return false;
-    }
-
-    public String toString() {
-        if (this.weight > -1) return refDest.getData() + " [" + weight + "], ";
-        else return refDest.getData() + ", ";
-    }
+ // Constructor que recibe vértice origen, destino y peso
+ public Edge(V from, V to, int weight) {
+     this.from = from;
+     this.to = to;
+     this.weight = weight;
+ }
 }

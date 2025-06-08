@@ -2,32 +2,29 @@ package graph;
 
 import listlinked.ListLinked;
 
-
- //Representa un vértice del grafo, con una lista de adyacencias
-
+// Clase para representar un vértice
 public class Vertex<E> {
-    private E data;
-    protected ListLinked<Edge<E>> listAdj;
+    private E data; // Dato del vértice
+    protected ListLinked<Edge<E>> listAdj; // Lista de adyacencias
 
     public Vertex(E data) {
-        this.data = data;
-        listAdj = new ListLinked<>();
+        this.data = data; // Asignar dato
+        listAdj = new ListLinked<>(); // Crear lista vacía
     }
 
     public E getData() {
-        return data;
+        return data; // Obtener dato
     }
 
-    @Override
     public boolean equals(Object o) {
         if (o instanceof Vertex<?>) {
             Vertex<E> v = (Vertex<E>) o;
-            return this.data.equals(v.data);
+            return this.data.equals(v.data); // Comparar datos
         }
         return false;
     }
 
     public String toString() {
-        return this.data + ": " + listAdj.toString();
+        return this.data + " -> " + listAdj.toString() + "\n"; // Mostrar vértice y adyacencias
     }
 }

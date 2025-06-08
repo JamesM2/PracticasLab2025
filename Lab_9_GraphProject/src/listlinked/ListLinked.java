@@ -1,33 +1,38 @@
 package listlinked;
 
+// Clase de lista enlazada simple
 public class ListLinked<E> {
-    public static class Node<E> {
-        public E data;
-        public Node<E> next;
 
-        public Node(E data) {
-            this.data = data;
-            this.next = null;
-        }
-    }
-
-    private Node<E> head;
+    private Node<E> head; // Nodo inicial
 
     public ListLinked() {
-        head = null;
+        head = null; // La lista comienza vacía
     }
-
-
-     //Agrega un nuevo elemento al inicio de la lista
 
     public void add(E data) {
-        Node<E> newNode = new Node<>(data);
-        newNode.next = head;
-        head = newNode;
+        Node<E> newNode = new Node<>(data); // Crear nuevo nodo
+        newNode.next = head; // Apuntar al anterior
+        head = newNode; // Actualizar cabeza
     }
 
+    public boolean remove(E data) {
+        Node<E> current = head; // Nodo actual
+        Node<E> prev = null; // Nodo anterior
 
-     //Verifica si un elemento existe en la lista
+        while (current != null) {
+            if (current.data.equals(data)) {
+                if (prev == null) {
+                    head = current.next; // Eliminar cabeza
+                } else {
+                    prev.next = current.next; // Saltar el nodo
+                }
+                return true; // Eliminado
+            }
+            prev = current;
+            current = current.next;
+        }
+        return false; // No encontrado
+    }
 
     public boolean contains(E data) {
         Node<E> current = head;
@@ -38,35 +43,39 @@ public class ListLinked<E> {
         return false;
     }
 
-
-     //Elimina un elemento de la lista
-    public boolean remove(E data) {
-        Node<E> current = head, prev = null;
-        while (current != null) {
-            if (current.data.equals(data)) {
-                if (prev == null) head = current.next;
-                else prev.next = current.next;
-                return true;
-            }
-            prev = current;
-            current = current.next;
-        }
-        return false;
-    }
-
-    //Devuelve el nodo inicial (head) de la lista
-     
-    public Node<E> getHead() {
-        return head;
-    }
-
     public String toString() {
-        StringBuilder sb = new StringBuilder();
+        String result = "";
         Node<E> current = head;
         while (current != null) {
-            sb.append(current.data).append(" -> ");
+            result += current.data.toString();
             current = current.next;
         }
-        return sb.toString();
+        return result;
+    }
+
+    public java.util.Iterator<E> iterator() {
+        return new java.util.Iterator<E>() {
+            Node<E> current = head;
+
+            public boolean hasNext() {
+                return current != null;
+            }
+
+            public E next() {
+                E data = current.data;
+                current = current.next;
+                return data;
+            }
+        };
+    }
+
+    private static class Node<E> {
+        E data; // Dato del nodo
+        Node<E> next; // Siguiente nodo
+
+        public Node(E data) {
+            this.data = data;
+            this.next = null;
+        }
     }
 }
