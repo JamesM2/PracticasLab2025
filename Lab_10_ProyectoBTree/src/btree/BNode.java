@@ -2,13 +2,13 @@ package btree;
 
 import java.util.ArrayList;
 
-// Clase que representa un nodo del árbol B
-public class BNode<E> {
-    protected ArrayList<E> keys; // Lista de claves
-    protected ArrayList<BNode<E>> childs; // Lista de hijos
-    protected int count; // Número de claves insertadas
-    protected static int nodeCounter = 0; // Contador global para IDs
-    protected int idNode; // ID único del nodo
+// Nodo del árbol B con claves comparables
+public class BNode<E extends Comparable<E>> {
+    protected ArrayList<E> keys;
+    protected ArrayList<BNode<E>> childs;
+    protected int count;
+    protected static int nodeCounter = 0;
+    protected int idNode;
 
     public BNode(int n) {
         this.keys = new ArrayList<>(n);
