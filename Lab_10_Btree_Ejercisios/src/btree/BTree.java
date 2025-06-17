@@ -1,5 +1,9 @@
 package btree;
 
+import model.RegistroEstudiante;
+import java.util.*;
+
+// Árbol B genérico
 public class BTree<E extends Comparable<E>> {
     private BNode<E> root;
     private int orden;
@@ -9,7 +13,7 @@ public class BTree<E extends Comparable<E>> {
         this.root = null;
     }
 
-    // Inserta una clave al árbol
+    // Inserta una clave en el árbol
     public void insert(E key) {
         if (root == null) {
             root = new BNode<>(orden);
@@ -29,7 +33,7 @@ public class BTree<E extends Comparable<E>> {
         }
     }
 
-    // Inserción recursiva
+    // Inserta recursivamente
     private E insertRecursive(BNode<E> node, E key, BNode<E> newChild) {
         int i = 0;
         while (i < node.count && key.compareTo(node.keys.get(i)) > 0) {
@@ -37,7 +41,7 @@ public class BTree<E extends Comparable<E>> {
         }
 
         if (i < node.count && key.compareTo(node.keys.get(i)) == 0) {
-            return null; // Clave duplicada
+            return null; // clave duplicada
         }
 
         if (node.childs.get(i) == null) {
@@ -46,9 +50,7 @@ public class BTree<E extends Comparable<E>> {
             }
             node.keys.set(i, key);
             node.count++;
-            if (node.count == orden) {
-                return split(node, newChild);
-            }
+            if (node.count == orden) return split(node, newChild);
             return null;
         } else {
             BNode<E> temp = new BNode<>(orden);
@@ -59,36 +61,29 @@ public class BTree<E extends Comparable<E>> {
                 node.keys.set(j, node.keys.get(j - 1));
                 node.childs.set(j + 1, node.childs.get(j));
             }
-
             node.keys.set(i, upKey);
             node.childs.set(i + 1, temp);
             node.count++;
-
-            if (node.count == orden) {
-                return split(node, newChild);
-            }
-
+            if (node.count == orden) return split(node, newChild);
             return null;
         }
     }
 
-    // Divide un nodo y actualiza
+    // Divide el nodo lleno
     private E split(BNode<E> node, BNode<E> newChild) {
         int mid = orden / 2;
         E upKey = node.keys.get(mid);
         newChild.count = orden - mid - 1;
-
         for (int i = 0; i < newChild.count; i++) {
             newChild.keys.set(i, node.keys.get(mid + 1 + i));
             newChild.childs.set(i, node.childs.get(mid + 1 + i));
         }
         newChild.childs.set(newChild.count, node.childs.get(orden));
         node.count = mid;
-
         return upKey;
     }
 
-    // Imprime el árbol en preorden
+    // Imprime el árbol
     public void print() {
         printRecursive(root, "");
     }
@@ -102,11 +97,10 @@ public class BTree<E extends Comparable<E>> {
         }
     }
 
-    // Busca una clave y muestra su ubicación
+    // Busca una clave
     public boolean search(E key) {
         return searchRecursive(root, key);
     }
-
     private boolean searchRecursive(BNode<E> node, E key) {
         if (node == null) return false;
         int[] pos = new int[1];
@@ -117,5 +111,24 @@ public class BTree<E extends Comparable<E>> {
         } else {
             return searchRecursive(node.childs.get(pos[0]), key);
         }
+    }
+
+    // Busca por código y devuelve el nombre
+    public String buscarNombre(int codigo) {
+        RegistroEstudiante resultado = buscarNombreRecursivo(root, codigo);
+        return (resultado != null) ? resultado.getNombre() : "No encontrado";
+    }
+
+    // Busca recursivamente por código
+    private RegistroEstudiante buscarNombreRecursivo(BNode<E> node, int codigo) {
+        if (node == null) return null;
+        for (int i = 0; i < node.count; i++) {
+            RegistroEstudiante actual = (RegistroEstudiante) node.keys.get(i);
+            if (actual.getCodigo() == codigo) return actual;
+            if (actual.getCodigo() > codigo) {
+                return buscarNombreRecursivo(node.childs.get(i), codigo);
+            }
+        }
+        return buscarNombreRecursivo(node.childs.get(node.count), codigo);
     }
 }
